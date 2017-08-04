@@ -22,7 +22,7 @@ import java.util.List;
 /*------------------------------------------------------------*/
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class Account implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -38,4 +38,8 @@ public class User implements Serializable {
     @Transient
     @JsonIgnore
     private List<Role> authorities = new ArrayList<>();
+
+    public Account(String username, String password, List<Role> authorities) {
+        this(null, username, password, authorities);
+    }
 }

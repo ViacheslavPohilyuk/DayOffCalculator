@@ -2,7 +2,8 @@ package dayoff.calc.web.controller;
 
 import dayoff.calc.data.UserRepository;
 import dayoff.calc.model.RegisterForm;
-import dayoff.calc.model.User;
+import dayoff.calc.model.Role;
+import dayoff.calc.model.Account;
 import dayoff.calc.web.exception.DuplicateUsernameException;
 import dayoff.calc.web.exception.PasswordsNotEqualException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -35,13 +37,13 @@ public class UserController {
 
     @RequestMapping(method = GET)
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Collection<User> users() {
+    public Collection<Account> users() {
         return userRepository.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = GET)
     //@PreAuthorize("hasRole('ROLE_USER')")
-    public User user(@PathVariable long id) {
+    public Account user(@PathVariable long id) {
         return userRepository.get(id);
     }
 
@@ -77,19 +79,23 @@ public class UserController {
         /* Encode password */
         String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-        User user = new User(null, form.getUsername(), encodedPassword, null);
+        /* Set list of roles for a user */
+        List<Role> userRoles = new ArrayList<>();
+        userRoles.add(new Role(Role.USER));
 
-        System.out.println(user.toString());
+        Account account = new Account(form.getUsername(), encodedPassword, userRoles);
 
-        userRepository.save(user);
+        System.out.println(account.toString());
+
+        userRepository.save(account);
 
         return "login";
     }
 
     @RequestMapping(method = PUT)
     //@PreAuthorize("#user.id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
-    public ResponseEntity updateId(User user) {
-        userRepository.update(user);
+    public ResponseEntity updateId(Account account) {
+        userRepository.update(account);
         return new ResponseEntity<>("User have been successfully changed", HttpStatus.OK);
 
     }
@@ -99,6 +105,5 @@ public class UserController {
     public ResponseEntity deleteId(@PathVariable long id) {
         userRepository.delete(id);
         return new ResponseEntity<>("User have been successfully deleted", HttpStatus.OK);
-
     }
 }

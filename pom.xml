@@ -15,7 +15,6 @@
         <hibernate-core.version>4.3.10.Final</hibernate-core.version>
         <spring.version>4.3.7.RELEASE</spring.version>
         <spring-security.version>4.2.2.RELEASE</spring-security.version>
-        <org.springframework.version>4.3.7.RELEASE</org.springframework.version>
         <mysql-connector.version>5.1.40</mysql-connector.version>
         <thymeleaf.spring.version>2.1.2.RELEASE</thymeleaf.spring.version>
         <javassist>3.18.2-GA</javassist>

@@ -17,7 +17,7 @@ public class Role implements GrantedAuthority, Serializable {
     public final static String ADMIN = "ROLE_ADMIN";
 
     @ManyToOne
-    User user;
+    Account account;
 
     @Id
     @Column(name = "user_role_id")
@@ -27,7 +27,7 @@ public class Role implements GrantedAuthority, Serializable {
     @Column(name = "role")
     private String roleName;
 
-    Role(String roleName) {
+    public Role(String roleName) {
         this.roleName = roleName;
     }
 
