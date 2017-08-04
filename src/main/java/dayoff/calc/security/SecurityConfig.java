@@ -1,7 +1,7 @@
 package dayoff.calc.security;
 
 import dayoff.calc.data.UserRepository;
-import dayoff.calc.model.Account;
+import dayoff.calc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -53,9 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService((username) -> {
-            Account account = userRepository.getByName(username);
-            return new User(account.getUsername(), account.getPassword(), true, true, true, true,
-                    account.getAuthorities());
+            User user = userRepository.getByName(username);
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(), user.getPassword(), true, true, true, true, user.getAuthorities());
         });
 
         authProvider.setPasswordEncoder(encoder());

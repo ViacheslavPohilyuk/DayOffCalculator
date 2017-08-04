@@ -3,7 +3,7 @@ package dayoff.calc.web.controller;
 import dayoff.calc.data.UserRepository;
 import dayoff.calc.model.RegisterForm;
 import dayoff.calc.model.Role;
-import dayoff.calc.model.Account;
+import dayoff.calc.model.User;
 import dayoff.calc.web.exception.DuplicateUsernameException;
 import dayoff.calc.web.exception.PasswordsNotEqualException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +37,13 @@ public class UserController {
 
     @RequestMapping(method = GET)
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Collection<Account> users() {
+    public Collection<User> users() {
         return userRepository.getAll();
     }
 
     @RequestMapping(value = "/{id}", method = GET)
     //@PreAuthorize("hasRole('ROLE_USER')")
-    public Account user(@PathVariable long id) {
+    public User user(@PathVariable long id) {
         return userRepository.get(id);
     }
 
@@ -83,19 +83,19 @@ public class UserController {
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(new Role(Role.USER));
 
-        Account account = new Account(form.getUsername(), encodedPassword, userRoles);
+        User user = new User(form.getUsername(), encodedPassword, userRoles);
 
-        System.out.println(account.toString());
+        System.out.println(user.toString());
 
-        userRepository.save(account);
+        userRepository.save(user);
 
         return "login";
     }
 
     @RequestMapping(method = PUT)
     //@PreAuthorize("#user.id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
-    public ResponseEntity updateId(Account account) {
-        userRepository.update(account);
+    public ResponseEntity updateId(User user) {
+        userRepository.update(user);
         return new ResponseEntity<>("User have been successfully changed", HttpStatus.OK);
 
     }

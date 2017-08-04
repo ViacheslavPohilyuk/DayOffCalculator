@@ -1,7 +1,7 @@
 package dayoff.calc.data;
 
 import dayoff.calc.model.Role;
-import dayoff.calc.model.Account;
+import dayoff.calc.model.User;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class UserRepository {
     @Autowired
     private SessionExecutor sessionExecutor;
 
-    public Collection<Account> getAll() {
-        return sessionExecutor.readSession((s) -> new ArrayList<Account>(s.createCriteria(Account.class).list()));
+    public Collection<User> getAll() {
+        return sessionExecutor.readSession((s) -> new ArrayList<User>(s.createCriteria(User.class).list()));
     }
 
     public List<Role> getRolesByUserid(long userId) {
@@ -29,34 +29,34 @@ public class UserRepository {
                 s.createCriteria(Role.class).add(Restrictions.eq("userId", userId)).list());
     }
 
-    public Account getByName(String username) {
+    public User getByName(String username) {
         return sessionExecutor.readSession((s) -> {
             Query query = s.createQuery("from users where username = :username ");
             query.setParameter("username", username);
-            Account account = (Account) query.uniqueResult();
+            User user = (User) query.uniqueResult();
 
-            account.setAuthorities(getRolesByUserid(account.getId()));
-            return account;
+            user.setAuthorities(getRolesByUserid(user.getId()));
+            return user;
         });
     }
 
-    public Account get(long id) {
-        return sessionExecutor.readSession((s) -> (Account) s.get(Account.class, id));
+    public User get(long id) {
+        return sessionExecutor.readSession((s) -> (User) s.get(User.class, id));
     }
 
-    public void update(Account account) {
-        sessionExecutor.updateSession((s) -> s.update(account));
+    public void update(User user) {
+        sessionExecutor.updateSession((s) -> s.update(user));
     }
 
-    public void save(Account account) {
-        sessionExecutor.updateSession((s) -> s.persist(account));
+    public void save(User user) {
+        sessionExecutor.updateSession((s) -> s.persist(user));
     }
 
     public void delete(long id) {
         sessionExecutor.updateSession(
                 (s) -> {
-                    Account account = (Account) s.get(Account.class, id);
-                    s.delete(account);
+                    User user = (User) s.get(User.class, id);
+                    s.delete(user);
 
                     // This makes the pending delete to be done
                     s.flush();
