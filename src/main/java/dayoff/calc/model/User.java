@@ -33,6 +33,7 @@ public class User implements Serializable {
     private String username;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Transient

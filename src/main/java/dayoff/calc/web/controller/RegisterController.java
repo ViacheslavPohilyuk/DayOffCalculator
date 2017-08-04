@@ -3,6 +3,7 @@ package dayoff.calc.web.controller;
 import dayoff.calc.data.repo.RoleRepository;
 import dayoff.calc.data.repo.UserRepository;
 import dayoff.calc.model.RegisterForm;
+import dayoff.calc.model.Role;
 import dayoff.calc.model.User;
 import dayoff.calc.web.exception.DuplicateUsernameException;
 import dayoff.calc.web.exception.PasswordsNotEqualException;
@@ -28,13 +29,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class RegisterController {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(method = GET)
     public String registerForm(Model model) {
@@ -44,8 +45,6 @@ public class RegisterController {
 
     @RequestMapping(method = POST)
     public String register(@ModelAttribute("registerForm") @Valid RegisterForm form, BindingResult bindingResult) {
-        System.out.println(form.toString());
-
         /* Check validation of the registration form */
         if (bindingResult.hasErrors())
             return "registerForm";
@@ -54,15 +53,11 @@ public class RegisterController {
         String formUsername = form.getUsername();
         List<String> usernames = userRepository.getUsernames();
         for (String u : usernames)
-            if (u.equals(formUsername)) {
-                System.out.println("duplicate");
+            if (u.equals(formUsername))
                 throw new DuplicateUsernameException();
-            }
 
-        if (!form.getPassword().equals(form.getSecond_password())) {
-            System.out.println("pass");
+        if (!form.getPassword().equals(form.getSecond_password()))
             throw new PasswordsNotEqualException();
-        }
 
         /* Encode password */
         String encodedPassword = passwordEncoder.encode(form.getPassword());
@@ -77,7 +72,6 @@ public class RegisterController {
         // role.getUser().setId(userId);
         // roleRepository.save(role);
 
-        System.out.println(user.toString());
         return "login";
     }
 }

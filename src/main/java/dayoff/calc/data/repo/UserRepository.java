@@ -2,7 +2,6 @@ package dayoff.calc.data.repo;
 
 import dayoff.calc.data.SessionExecutor;
 import dayoff.calc.model.User;
-import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,9 +32,10 @@ public class UserRepository {
     }
 
     public User getByName(String username) {
-        return sessionExecutor.readSession((s) -> (User) s.createCriteria(User.class)
-                .setProjection(Projections.projectionList()
-                        .add(Projections.property("username"))).uniqueResult());
+        return sessionExecutor.readSession((s) ->
+                (User) s.createQuery("from User where username = :username")
+                        .setParameter("username", username)
+                        .uniqueResult());
     }
 
     public User get(long id) {
@@ -48,7 +48,6 @@ public class UserRepository {
 
     public void update(User user) {
         sessionExecutor.updateSession((s) -> s.update(user));
-
     }
 
     public void save(User user) {

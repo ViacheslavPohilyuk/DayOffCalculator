@@ -24,11 +24,11 @@
 </c:if>
 <h1>Sign in</h1>
 
-<form name="f"
-      action="<c:url value='/auth/login_check'/>"
-      method="POST" class="c-registration-form">
+<form name="f" method="POST"
+      action="<c:url value='/auth/login_check'/>">
     <input name="username" type="text" placeholder="Login">
     <input name="password" type="password" placeholder="Password">
+    <input type="submit" value="submit"/>
 </form>
 </body>
 </html>

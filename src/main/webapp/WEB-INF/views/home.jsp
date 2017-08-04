@@ -1,3 +1,4 @@
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: mac
@@ -11,6 +12,12 @@
     <title>Home</title>
 </head>
 <body>
-    <h2>Hello!</h2>
+<h2>Hello!</h2>
+<s:url value="/login" var="login_url"/>
+<s:url value="/register" var="register_url"/>
+<div>
+    <a href="${login_url}">Sign in </a>|
+    <a href="${register_url}">Sign up</a>
+</div>
 </body>
 </html>

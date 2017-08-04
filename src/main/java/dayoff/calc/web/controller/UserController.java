@@ -47,7 +47,7 @@ public class UserController {
 
     @RequestMapping(value = "/name/{username}", method = GET)
     //@PreAuthorize("hasRole('ROLE_USER')")
-    public User user(@PathVariable String username) {
+    public @ResponseBody User user(@PathVariable String username) {
         return userRepository.getByName(username);
     }
 
