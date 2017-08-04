@@ -1,6 +1,7 @@
 package dayoff.calc.web.controller;
 
-import dayoff.calc.data.UserRepository;
+import dayoff.calc.data.repo.RoleRepository;
+import dayoff.calc.data.repo.UserRepository;
 import dayoff.calc.model.RegisterForm;
 import dayoff.calc.model.Role;
 import dayoff.calc.model.User;
@@ -32,9 +33,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @RequestMapping(method = GET)
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Collection<User> users() {
@@ -47,49 +45,10 @@ public class UserController {
         return userRepository.get(id);
     }
 
-    /* @ModelAttribute("registerForm")
-    public RegisterForm getRegisterForm() {
-        return new RegisterForm();
-    } */
-
-    @RequestMapping(value = "/register", method = GET)
-    public String registerForm(Model model) {
-        model.addAttribute(new RegisterForm());
-        return "registerForm";
-    }
-
-    @RequestMapping(value = "/register", method = POST)
-    public String register(@ModelAttribute("registerForm") @Valid RegisterForm form, BindingResult bindingResult) {
-        System.out.println(form.toString());
-
-        if (bindingResult.hasErrors())
-            return "registerForm";
-
-        String username = form.getUsername();
-        if (username != null) {
-            System.out.println("duplicate");
-            throw new DuplicateUsernameException();
-        }
-
-        if (!form.getPassword().equals(form.getSecond_password())) {
-            System.out.println("pass");
-            throw new PasswordsNotEqualException();
-        }
-
-        /* Encode password */
-        String encodedPassword = passwordEncoder.encode(form.getPassword());
-
-        /* Set list of roles for a user */
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(new Role(Role.USER));
-
-        User user = new User(form.getUsername(), encodedPassword, userRoles);
-
-        System.out.println(user.toString());
-
-        userRepository.save(user);
-
-        return "login";
+    @RequestMapping(value = "/name/{username}", method = GET)
+    //@PreAuthorize("hasRole('ROLE_USER')")
+    public User user(@PathVariable String username) {
+        return userRepository.getByName(username);
     }
 
     @RequestMapping(method = PUT)
@@ -97,7 +56,6 @@ public class UserController {
     public ResponseEntity updateId(User user) {
         userRepository.update(user);
         return new ResponseEntity<>("User have been successfully changed", HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)

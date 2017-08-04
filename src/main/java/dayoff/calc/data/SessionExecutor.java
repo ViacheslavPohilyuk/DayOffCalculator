@@ -15,6 +15,7 @@ import java.util.function.Function;
  */
 @Component
 public class SessionExecutor {
+
     private SessionFactory sessionFactory;
 
     @Autowired

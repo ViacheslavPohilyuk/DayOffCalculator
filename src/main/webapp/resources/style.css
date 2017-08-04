@@ -11,6 +11,7 @@ input.error {
 }
 
 div.errors {
-	background-color: #ffcccc;
-	border: 2px solid red;
+	/* background-color: #ffcccc;
+	border: 2px solid red; */
+	color: red;
 }

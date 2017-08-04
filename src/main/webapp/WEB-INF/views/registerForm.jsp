@@ -10,10 +10,10 @@
 <body>
 <h1>Register</h1>
 
-<c:if test="${duplicateUsernameError == true}">
+<c:if test="${duplicateUsernameError != null}">
     <span style="color: red;">Sorry, but this username is already exist.</span>
 </c:if>
-<c:if test="${PasswordsNotEqualError == true}">
+<c:if test="${PasswordsNotEqualError != null}">
     <span style="color: red;">First and second passwords aren't equal. Try one more.</span>
 </c:if>
 

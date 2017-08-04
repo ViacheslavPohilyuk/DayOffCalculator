@@ -1,5 +1,6 @@
 package dayoff.calc.model;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
 /**
  * Created by mac on 07.07.17.
  */
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "user_roles")

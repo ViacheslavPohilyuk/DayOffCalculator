@@ -1,6 +1,6 @@
 package dayoff.calc.security;
 
-import dayoff.calc.data.UserRepository;
+import dayoff.calc.data.repo.UserRepository;
 import dayoff.calc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,22 +24,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                 //.antMatchers("/user").access("hasRole('ROLE_USER')")
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/user/afterLogin")
-                .failureUrl("/login?error")
-                .permitAll()
-                .loginProcessingUrl("/auth/login_check")
-                .usernameParameter("username")
-                .passwordParameter("password")
+                    .formLogin()
+                    .loginPage("/login")
+                        .defaultSuccessUrl("/user/afterLogin")
+                        .failureUrl("/login?error")
+                    .permitAll()
+                        .loginProcessingUrl("/auth/login_check")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                 .and()
-                .logout().logoutSuccessUrl("/").logoutUrl("/logout")
+                    .logout().logoutSuccessUrl("/").logoutUrl("/logout")
                 .and()
-                .csrf().disable();
+                    .csrf().disable();
     }
 
     @Override
