@@ -2,8 +2,7 @@ package dayoff.calc.web.controller;
 
 import dayoff.calc.data.repo.RoleRepository;
 import dayoff.calc.data.repo.UserRepository;
-import dayoff.calc.model.RegisterForm;
-import dayoff.calc.model.Role;
+import dayoff.calc.model.form.RegisterForm;
 import dayoff.calc.model.User;
 import dayoff.calc.web.exception.DuplicateUsernameException;
 import dayoff.calc.web.exception.PasswordsNotEqualException;
@@ -40,24 +39,30 @@ public class RegisterController {
     @RequestMapping(method = GET)
     public String registerForm(Model model) {
         model.addAttribute(new RegisterForm());
-        return "registerForm";
+        return "signUp";
     }
 
     @RequestMapping(method = POST)
     public String register(@ModelAttribute("registerForm") @Valid RegisterForm form, BindingResult bindingResult) {
         /* Check validation of the registration form */
         if (bindingResult.hasErrors())
-            return "registerForm";
+            return "signUp";
+
+        System.out.println(form.toString());
 
         /* Check if username from the registration form exists in the db */
         String formUsername = form.getUsername();
         List<String> usernames = userRepository.getUsernames();
         for (String u : usernames)
-            if (u.equals(formUsername))
+            if (u.equals(formUsername)) {
+                System.out.println("DuplicateUsernameException");
                 throw new DuplicateUsernameException();
+            }
 
-        if (!form.getPassword().equals(form.getSecond_password()))
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            System.out.println("PasswordsNotEqualException");
             throw new PasswordsNotEqualException();
+        }
 
         /* Encode password */
         String encodedPassword = passwordEncoder.encode(form.getPassword());

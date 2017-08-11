@@ -1,25 +1,14 @@
 package dayoff.calc.web.controller;
 
-import dayoff.calc.data.repo.RoleRepository;
 import dayoff.calc.data.repo.UserRepository;
-import dayoff.calc.model.RegisterForm;
-import dayoff.calc.model.Role;
 import dayoff.calc.model.User;
-import dayoff.calc.web.exception.DuplicateUsernameException;
-import dayoff.calc.web.exception.PasswordsNotEqualException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -35,7 +24,7 @@ public class UserController {
 
     @RequestMapping(method = GET)
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Collection<User> users() {
+    public @ResponseBody Collection<User> users() {
         return userRepository.getAll();
     }
 

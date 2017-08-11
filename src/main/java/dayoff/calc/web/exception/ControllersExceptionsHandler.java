@@ -1,6 +1,6 @@
 package dayoff.calc.web.exception;
 
-import dayoff.calc.model.RegisterForm;
+import dayoff.calc.model.form.RegisterForm;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,13 +19,14 @@ public class ControllersExceptionsHandler {
     public String duplicateUsernameException(Model model) {
         model.addAttribute(new RegisterForm());
         model.addAttribute("duplicateUsernameError", "error");
-        return "registerForm";
+        return "signUp";
     }
 
     @ExceptionHandler(PasswordsNotEqualException.class)
     public String passwordsNotEqualException(Model model) {
         model.addAttribute(new RegisterForm());
         model.addAttribute("PasswordsNotEqualError", "error");
-        return "registerForm";
+        return "signUp";
     }
 }
+
