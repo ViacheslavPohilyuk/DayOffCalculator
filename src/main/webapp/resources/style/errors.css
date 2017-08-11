@@ -1,15 +1,10 @@
-/* div.server-register-errors {
-    position: relative;
-    left: 20%;
-} */
-
 .errors {
     bottom: 40px;
     position: relative;
     color: red;
 }
 
-/* div.server-errors span, div.form-validation-errors, */ label.error {
+label.error {
     color: red;
 }
 

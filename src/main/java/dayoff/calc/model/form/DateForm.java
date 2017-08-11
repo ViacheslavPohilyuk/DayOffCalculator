@@ -1,7 +1,6 @@
 package dayoff.calc.model.form;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Pattern;
@@ -9,7 +8,9 @@ import javax.validation.constraints.Pattern;
 /**
  * Created by mac on 08.08.17.
  */
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class DateForm {
 

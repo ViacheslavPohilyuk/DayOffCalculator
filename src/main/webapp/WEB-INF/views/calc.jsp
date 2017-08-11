@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: mac
@@ -11,7 +12,9 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" type="text/css"
-          href="<c:url value="/resources/style/style.css"/>">
+          href="<c:url value="/resources/style/calc.css"/>">
+    <link rel="stylesheet" type="text/css"
+          href="<c:url value="/resources/style/errors.css"/>">
 </head>
 <body>
 
@@ -19,24 +22,36 @@
 
 <div class="fixed">
     <h1>Calculate Number Of Days Off Between Two Dates</h1>
-    <form name="f" id="f" class="large bg-r pn" method="post" action="/dayOff">
+
+    <sf:form class="large bg-r pn" action="/calc" method="POST" commandName="dateForm">
+
+        <!-- <form name="f" id="f" class="large bg-r pn" method="post" action="/calc"> -->
         <div class="form-row">
             <!-- First date: -->
             <div class="five columns"><h2>Start Date</h2>
                 <div class="date-select">
-                    <div class="left"><label for="d1">Day:</label><input placeholder="dd" type="text"
+                    <div class="left"><label for="startDateDay">Day:</label>
+                        <!--<input placeholder="dd" type="text"
                                                                          maxlength="2" size="3" id="d1"
-                                                                         name="startDateDay">
+                                                                         name="startDateDay"> -->
+                        <sf:input path="startDateDay" placeholder="dd" maxlength="2" size="3"
+                                  cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
-                    <div class="left"><label for="m1">Month:</label><input tad-va="date" placeholder="mm" type="text"
+                    <div class="left"><label for="startDateMonth">Month:</label>
+                        <!--<input tad-va="date" placeholder="mm" type="text"
                                                                            maxlength="2" size="3"
-                                                                           id="m1" name="startDateMonth">
+                                                                           id="m1" name="startDateMonth"> -->
+                        <sf:input path="startDateMonth" placeholder="mm" maxlength="2" size="3"
+                                  cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
-                    <div class="left"><label for="y1">Year:</label><input placeholder="yyyy" type="text"
+                    <div class="left"><label for="startDateYear">Year:</label>
+                        <!--<input placeholder="yyyy" type="text"
                                                                           maxlength="4" size="5" id="y1"
-                                                                          name="startDateYear">
+                                                                          name="startDateYear"> -->
+                        <sf:input path="startDateYear" placeholder="yyyy" maxlength="4" size="3"
+                                  cssErrorClass="error"/>
                     </div>
                 </div>
             </div>
@@ -45,19 +60,25 @@
             <!-- Second date: -->
             <div class="five columns"><h2>End Date</h2>
                 <div class="date-select">
-                    <div class="left"><label for="d2">Day:</label><input placeholder="dd" type="text"
+                    <div class="left"><label for="endDateDay">Day:</label>
+                        <!--<input placeholder="dd" type="text"
                                                                          maxlength="2" size="3" id="d2"
-                                                                         name="endDateDay">
+                                                                         name="endDateDay"> -->
+                        <sf:input path="endDateDay" placeholder="dd" maxlength="2" size="3"
+                                  cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
-                    <div class="left"><label for="m2">Month:</label><input placeholder="mm" type="text"
+                    <div class="left"><label for="endDateMonth">Month:</label>
+                        <!-- <input placeholder="mm" type="text"
                                                                            maxlength="2" size="3"
-                                                                           id="m2" name="endDateMonth">
+                                                                           id="m2" name="endDateMonth"> -->
+                        <sf:input path="endDateMonth" placeholder="mm" maxlength="2" size="3"
+                                  cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
-                    <div class="left"><label for="y2">Year:</label><input placeholder="yyyy" type="text"
-                                                                          maxlength="4" size="5" id="y2"
-                                                                          name="endDateYear">
+                    <div class="left"><label for="endDateYear">Year:</label>
+                        <sf:input path="endDateYear" placeholder="yyyy" maxlength="4" size="3"
+                                  cssErrorClass="error"/>
                     </div>
                 </div>
             </div>
@@ -72,7 +93,17 @@
             </div>
         </div>
         <div class="form_footer"><input type="submit" id="subbut2" value="Calculate Duration"></div>
-    </form>
+
+        <div class="errors">
+            <sf:errors path="*" element="div" cssClass="form-validation-errors"/>
+
+            <div>
+                <c:if test="${dateInvalidError != null}">
+                    <span>You put incorrect date (For example July can't have 32-th day)</span>
+                </c:if>
+            </div>
+        </div>
+    </sf:form>
 
     <c:if test="${result != null}">
         <div class="bx-result">
@@ -101,5 +132,10 @@
     .refs {
         bottom: 42px;
     }
+
+    /* .errors {
+        bottom: 0px;
+        left: 8%;
+    } */
 </style>
 </html>

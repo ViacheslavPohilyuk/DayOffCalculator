@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.DateTimeException;
 
 /**
  * Created by mac on 17.05.17.
@@ -18,15 +19,22 @@ public class ControllersExceptionsHandler {
     @ExceptionHandler(DuplicateUsernameException.class)
     public String duplicateUsernameException(Model model) {
         model.addAttribute(new RegisterForm());
-        model.addAttribute("duplicateUsernameError", "error");
+        model.addAttribute("duplicateUsernameError", true);
         return "signUp";
     }
 
     @ExceptionHandler(PasswordsNotEqualException.class)
     public String passwordsNotEqualException(Model model) {
         model.addAttribute(new RegisterForm());
-        model.addAttribute("PasswordsNotEqualError", "error");
+        model.addAttribute("PasswordsNotEqualError", true);
         return "signUp";
     }
+
+    @ExceptionHandler(DateTimeException.class)
+    public String dateInvalidException(Model model) {
+        model.addAttribute("dateInvalidError", true);
+        return "calc";
+    }
+
 }
 
