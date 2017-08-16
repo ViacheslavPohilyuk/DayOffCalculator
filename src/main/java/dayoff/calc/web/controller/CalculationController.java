@@ -3,7 +3,9 @@ package dayoff.calc.web.controller;
 import dayoff.calc.DayOffCalculation;
 import dayoff.calc.data.repo.DateRepository;
 import dayoff.calc.model.form.DateForm;
+import dayoff.calc.web.exception.EndDateLessThanStartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -24,24 +28,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class CalculationController {
 
     @Autowired
-    DateRepository dateRepository;
-
-    @Autowired
-    DayOffCalculation dayOffCalc;
+    private DayOffCalculation dayOffCalc;
 
     @RequestMapping(method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
     String getDateForm(Model model) {
         model.addAttribute(new DateForm());
         return "calc";
     }
 
     @RequestMapping(method = POST)
-    //@PreAuthorize("hasRole('ROLE_USER')")
-    public String calculateDaysOff(@ModelAttribute("registerForm") @Valid DateForm dateForm,
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String calculateDaysOff(@ModelAttribute("dateForm") @Valid DateForm dateForm,
                                    BindingResult bindingResult, Model model) {
+        model.addAttribute(new DateForm());
         if (bindingResult.hasErrors())
             return "calc";
-        System.out.println("DateForm: { " + dateForm.toString() + "}");
+
+        System.out.println("dateForm: " + dateForm.toString());
 
         LocalDate startDate = LocalDate.of(dateForm.startDateYear(),
                 dateForm.startDateMonth(),
@@ -51,7 +55,10 @@ public class CalculationController {
                 dateForm.endDateMonth(),
                 dateForm.endDateDay());
 
-        long result = dayOffCalc.computeHolidays(startDate, endDate);
+        if (ChronoUnit.DAYS.between(startDate, endDate) < 0)
+            throw new EndDateLessThanStartException();
+
+        long result = dayOffCalc.computeHolidays(startDate, endDate, dateForm.isEndDayIncluded());
 
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);

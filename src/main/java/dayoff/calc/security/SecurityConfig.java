@@ -1,5 +1,6 @@
 package dayoff.calc.security;
 
+import dayoff.calc.data.repo.RoleRepository;
 import dayoff.calc.data.repo.UserRepository;
 import dayoff.calc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -50,8 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
+
         authProvider.setUserDetailsService((username) -> {
             User user = userRepository.getByName(username);
+
+            user.setAuthorities(roleRepository.getRolesByUserId(user.getId()));
+
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(), user.getPassword(), true, true, true, true, user.getAuthorities());
         });

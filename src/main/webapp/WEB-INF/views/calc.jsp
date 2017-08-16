@@ -71,14 +71,11 @@
         </div>
 
         <div class="form-row">
-            <div class="twelve columns"><label
-                    title="To calculate the duration of something, e.g. a week from Monday to Friday (5 days) - check this box. To calculate an age, uncheck this box. "><input
-                    type="checkbox" name="endDayIncluded" id="ti" value="on" checked="">Include end date in calculation
-                (1 day is
-                added)</label>
+            <div class="twelve columns">
+                <sf:checkbox path="endDayIncluded" value="true"/> Include end date in calculation (1 day is added)
             </div>
         </div>
-        <div class="form_footer"><input type="submit" id="subbut2" value="Calculate Duration"></div>
+        <div class="form_footer"><input type="submit" id="subbut2" value="Calculate"></div>
 
         <div class="errors">
             <sf:errors path="*" element="div" cssClass="form-validation-errors"/>
@@ -86,6 +83,9 @@
             <div>
                 <c:if test="${dateInvalidError != null}">
                     <span>You put incorrect date (For example July can't have 32-th day)</span>
+                </c:if>
+                <c:if test="${EndDateLessThanStartError != null}">
+                    <span>Sorry, but end date must be bigger than start date.</span>
                 </c:if>
             </div>
         </div>
@@ -120,10 +120,11 @@
         bottom: 42px;
     }
 
-    /* .errors {
-        bottom: 0px;
-        left: 8%;
-    } */
+    div.errors div {
+        position: relative;
+        right: 3%;
+        top: 115px;
+    }
 </style>
 <script>
     for (var i = 0; i < 6; i++)

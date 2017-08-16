@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.MonthDay;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -22,9 +19,9 @@ import java.util.List;
 public class DayOffCalculation {
 
     @Autowired
-    DateRepository dateRepository;
+    private DateRepository dateRepository;
 
-    public long computeHolidays(LocalDate startDate, LocalDate endDate) {
+    public long computeHolidays(LocalDate startDate, LocalDate endDate, boolean endDateIncluded) {
         long daysOffCount = 0;
 
         Comparator<Holiday> holidayComparator = (md1, md2) -> {
@@ -36,19 +33,26 @@ public class DayOffCalculation {
 
         List<Holiday> holidays = dateRepository.getAll();
 
+        System.out.println("holidays:");
+        for (Holiday h : holidays)
+            System.out.println(h.toString());
+
         holidays.sort(holidayComparator);
 
         DayOfWeek dayOfWeek;
         Holiday dayMonthOfPeriod;
         while (!startDate.isEqual(endDate)) {
             dayOfWeek = startDate.getDayOfWeek();
+            System.out.print(startDate.toString() + " " + dayOfWeek.toString());
             if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
                 daysOffCount++;
+                System.out.println(" weekend");
             } else {
                 dayMonthOfPeriod = new Holiday(startDate.getMonth().getValue(), startDate.getDayOfMonth());
-                // dayMonthOfPeriod = MonthDay.of(startDate.getMonth(), startDate.getDayOfMonth());
-                if (Collections.binarySearch(holidays, dayMonthOfPeriod, holidayComparator) >= 0)
+                if (Collections.binarySearch(holidays, dayMonthOfPeriod, holidayComparator) >= 0) {
                     daysOffCount++;
+                    System.out.println("holiday");
+                }
             }
             startDate = startDate.plus(Period.ofDays(1));
         }

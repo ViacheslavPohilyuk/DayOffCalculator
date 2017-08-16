@@ -18,12 +18,22 @@ public class RoleRepository {
     private SessionExecutor sessionExecutor;
 
     public List<Role> getRolesByUserId(long userId) {
-        return sessionExecutor.readSession((s) ->
-                s.createCriteria(Role.class).add(Restrictions.eq("userId", userId)).list());
+        List<Role> roles = sessionExecutor.readSession((s) ->
+                s.createCriteria(Role.class).add(Restrictions.eq("user.id", userId)).list());
+
+        System.out.println("Roles: ");
+        for (Role role : roles)
+            System.out.println(role.toString());
+        return roles;
     }
 
+
     public void save(Role role) {
-        sessionExecutor.updateSession((s) -> s.persist(role));
+        sessionExecutor.updateSession((s) -> {
+            System.out.println(role.toString());
+            s.persist(role);
+            return null;
+        });
     }
 
 }

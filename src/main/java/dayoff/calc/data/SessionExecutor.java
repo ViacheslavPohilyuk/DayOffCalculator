@@ -23,16 +23,18 @@ public class SessionExecutor {
         this.sessionFactory = sessionFactory;
     }
 
-    public void updateSession(Consumer<Session> updateStmt) {
+    public Long updateSession(Function<Session, Long> updateStmt) {
+        Long id = null;
         try {
             Session session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
-            updateStmt.accept(session); // update operation
+            id = updateStmt.apply(session); // update operation
             tx.commit();
             session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
+        return id;
     }
 
     public <T> T readSession(Function<Session, T> readStmt) {

@@ -2,6 +2,7 @@ package dayoff.calc.web.controller;
 
 import dayoff.calc.data.repo.RoleRepository;
 import dayoff.calc.data.repo.UserRepository;
+import dayoff.calc.model.Role;
 import dayoff.calc.model.form.RegisterForm;
 import dayoff.calc.model.User;
 import dayoff.calc.web.exception.DuplicateUsernameException;
@@ -69,13 +70,14 @@ public class RegisterController {
 
         /* Save new user */
         User user = new User(form.getUsername(), encodedPassword, null);
-        userRepository.save(user);
+        long userId = userRepository.save(user);
 
         /* Save new role and bind to a new user */
-        // long userId = userRepository.getByName(user.getUsername()).getId();
-        // Role role = new Role(Role.USER);
-        // role.getUser().setId(userId);
-        // roleRepository.save(role);
+        Role role = new Role(Role.USER);
+        user.setId(userId);
+        role.setUser(user);
+        System.out.println(role.toString());
+        roleRepository.save(role);
 
         return "login";
     }

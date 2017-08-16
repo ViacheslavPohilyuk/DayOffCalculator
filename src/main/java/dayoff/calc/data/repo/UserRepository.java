@@ -47,11 +47,18 @@ public class UserRepository {
     }
 
     public void update(User user) {
-        sessionExecutor.updateSession((s) -> s.update(user));
+        sessionExecutor.updateSession((s) -> {
+            s.update(user);
+            return null;
+        });
     }
 
-    public void save(User user) {
-        sessionExecutor.updateSession((s) -> s.persist(user));
+    public long save(User user) {
+        return sessionExecutor.updateSession((s) -> {
+            s.persist(user);
+            s.flush();
+            return user.getId();
+        });
     }
 
     public void delete(long id) {
@@ -62,6 +69,7 @@ public class UserRepository {
 
                     // This makes the pending delete to be done
                     s.flush();
+                    return null;
                 });
     }
 }

@@ -12,9 +12,7 @@ import javax.validation.constraints.Size;
  */
 /* Lombok annotations
  * for generating getters, setters, toString and constructors */
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 /*------------------------------------------------------------*/
