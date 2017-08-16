@@ -1,9 +1,19 @@
 package dayoff.calc;
 
+import dayoff.calc.data.repo.DateRepository;
+import dayoff.calc.model.Holiday;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.MonthDay;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by mac on 07.08.17.
@@ -11,35 +21,37 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class DayOffCalculation {
 
-    public long computeWeekendsCount(LocalDate startDate, LocalDate endDate) {
+    @Autowired
+    DateRepository dateRepository;
 
+    public long computeHolidays(LocalDate startDate, LocalDate endDate) {
         long daysOffCount = 0;
-        long diffInDays = ChronoUnit.DAYS.between(startDate, endDate);
-        int dayOfFirstWeeks = startDate.getDayOfWeek().getValue();
 
-        /* Count the number of weekends in the first two weeks
-           of a period between two dates */
-        if (dayOfFirstWeeks != 1) {
-            outer:
-            for (int week = 0; week < 2; week++) {
-                for (; dayOfFirstWeeks <= 7; dayOfFirstWeeks++, diffInDays--) {
-                    if (diffInDays <= 0) {
-                        break outer;
-                    }
-                    if (dayOfFirstWeeks >= 6) {
-                        daysOffCount++;
-                    }
-                }
-                dayOfFirstWeeks %= 7;
+        Comparator<Holiday> holidayComparator = (md1, md2) -> {
+            int res = md1.getMonth() - md2.getMonth();
+            if (res == 0)
+                return md1.getDay() - md2.getDay();
+            return res;
+        };
+
+        List<Holiday> holidays = dateRepository.getAll();
+
+        holidays.sort(holidayComparator);
+
+        DayOfWeek dayOfWeek;
+        Holiday dayMonthOfPeriod;
+        while (!startDate.isEqual(endDate)) {
+            dayOfWeek = startDate.getDayOfWeek();
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                daysOffCount++;
+            } else {
+                dayMonthOfPeriod = new Holiday(startDate.getMonth().getValue(), startDate.getDayOfMonth());
+                // dayMonthOfPeriod = MonthDay.of(startDate.getMonth(), startDate.getDayOfMonth());
+                if (Collections.binarySearch(holidays, dayMonthOfPeriod, holidayComparator) >= 0)
+                    daysOffCount++;
             }
+            startDate = startDate.plus(Period.ofDays(1));
         }
-
-        /* Find a count of weekends by dividing diffInDays by 7
-           and multiplying by 2 the result of dividing */
-        daysOffCount += (diffInDays / 7) * 2;
-
-        /* Find a count of weekends of last week of a period */
-        daysOffCount += (diffInDays % 7 == 6) ? 1 : 0;
 
         return daysOffCount;
     }

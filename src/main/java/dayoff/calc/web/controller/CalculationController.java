@@ -6,8 +6,11 @@ import dayoff.calc.model.form.DateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -34,18 +37,21 @@ public class CalculationController {
 
     @RequestMapping(method = POST)
     //@PreAuthorize("hasRole('ROLE_USER')")
-    public String calculateDaysOff(DateForm dateForm, Model model) {
+    public String calculateDaysOff(@ModelAttribute("registerForm") @Valid DateForm dateForm,
+                                   BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors())
+            return "calc";
         System.out.println("DateForm: { " + dateForm.toString() + "}");
 
-        LocalDate startDate = LocalDate.of(dateForm.getStartDateYear(),
-                dateForm.getStartDateMonth(),
-                dateForm.getStartDateDay());
+        LocalDate startDate = LocalDate.of(dateForm.startDateYear(),
+                dateForm.startDateMonth(),
+                dateForm.startDateDay());
 
-        LocalDate endDate = LocalDate.of(dateForm.getEndDateYear(),
-                dateForm.getEndDateMonth(),
-                dateForm.getEndDateDay());
+        LocalDate endDate = LocalDate.of(dateForm.endDateYear(),
+                dateForm.endDateMonth(),
+                dateForm.endDateDay());
 
-        long result = dayOffCalc.computeWeekendsCount(startDate, endDate);
+        long result = dayOffCalc.computeHolidays(startDate, endDate);
 
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);

@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: mac
@@ -23,61 +25,45 @@
 <div class="fixed">
     <h1>Calculate Number Of Days Off Between Two Dates</h1>
 
-    <sf:form class="large bg-r pn" action="/calc" method="POST" commandName="dateForm">
-
-        <!-- <form name="f" id="f" class="large bg-r pn" method="post" action="/calc"> -->
+    <sf:form name="f" id="f" cssClass="large bg-r pn" action="/calc" method="POST" commandName="dateForm">
         <div class="form-row">
             <!-- First date: -->
             <div class="five columns"><h2>Start Date</h2>
                 <div class="date-select">
                     <div class="left"><label for="startDateDay">Day:</label>
-                        <!--<input placeholder="dd" type="text"
-                                                                         maxlength="2" size="3" id="d1"
-                                                                         name="startDateDay"> -->
                         <sf:input path="startDateDay" placeholder="dd" maxlength="2" size="3"
                                   cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
                     <div class="left"><label for="startDateMonth">Month:</label>
-                        <!--<input tad-va="date" placeholder="mm" type="text"
-                                                                           maxlength="2" size="3"
-                                                                           id="m1" name="startDateMonth"> -->
                         <sf:input path="startDateMonth" placeholder="mm" maxlength="2" size="3"
                                   cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
                     <div class="left"><label for="startDateYear">Year:</label>
-                        <!--<input placeholder="yyyy" type="text"
-                                                                          maxlength="4" size="5" id="y1"
-                                                                          name="startDateYear"> -->
-                        <sf:input path="startDateYear" placeholder="yyyy" maxlength="4" size="3"
+                        <sf:input path="startDateYear" placeholder="yyyy" maxlength="4" size="4"
                                   cssErrorClass="error"/>
                     </div>
                 </div>
             </div>
+
             <div class="two columns"></div>
 
             <!-- Second date: -->
             <div class="five columns"><h2>End Date</h2>
                 <div class="date-select">
                     <div class="left"><label for="endDateDay">Day:</label>
-                        <!--<input placeholder="dd" type="text"
-                                                                         maxlength="2" size="3" id="d2"
-                                                                         name="endDateDay"> -->
                         <sf:input path="endDateDay" placeholder="dd" maxlength="2" size="3"
                                   cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
                     <div class="left"><label for="endDateMonth">Month:</label>
-                        <!-- <input placeholder="mm" type="text"
-                                                                           maxlength="2" size="3"
-                                                                           id="m2" name="endDateMonth"> -->
                         <sf:input path="endDateMonth" placeholder="mm" maxlength="2" size="3"
                                   cssErrorClass="error"/>
                         <span class="fld-aid">&nbsp;.&nbsp;</span>
                     </div>
                     <div class="left"><label for="endDateYear">Year:</label>
-                        <sf:input path="endDateYear" placeholder="yyyy" maxlength="4" size="3"
+                        <sf:input path="endDateYear" placeholder="yyyy" maxlength="4" size="4"
                                   cssErrorClass="error"/>
                     </div>
                 </div>
@@ -117,6 +103,7 @@
             </div>
         </div>
     </c:if>
+
 </div>
 </body>
 <style>
@@ -138,4 +125,8 @@
         left: 8%;
     } */
 </style>
+<script>
+    for (var i = 0; i < 6; i++)
+        document.getElementsByTagName("input")[i].setAttribute("value", "");
+</script>
 </html>
