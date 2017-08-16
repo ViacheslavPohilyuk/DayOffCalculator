@@ -58,8 +58,10 @@ public class CalculationController {
         if (ChronoUnit.DAYS.between(startDate, endDate) < 0)
             throw new EndDateLessThanStartException();
 
-        long result = dayOffCalc.computeHolidays(startDate, endDate, dateForm.isEndDayIncluded());
+        boolean isEndDayIncluded = dateForm.isEndDayIncluded();
+        long result = dayOffCalc.computeHolidays(startDate, endDate, isEndDayIncluded);
 
+        model.addAttribute("isEndDayIncluded", isEndDayIncluded);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("result", result);

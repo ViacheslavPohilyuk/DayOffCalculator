@@ -33,25 +33,21 @@ public class DayOffCalculation {
 
         List<Holiday> holidays = dateRepository.getAll();
 
-        System.out.println("holidays:");
-        for (Holiday h : holidays)
-            System.out.println(h.toString());
-
         holidays.sort(holidayComparator);
+
+        if (endDateIncluded)
+            endDate = endDate.plus(Period.ofDays(1));
 
         DayOfWeek dayOfWeek;
         Holiday dayMonthOfPeriod;
         while (!startDate.isEqual(endDate)) {
             dayOfWeek = startDate.getDayOfWeek();
-            System.out.print(startDate.toString() + " " + dayOfWeek.toString());
             if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
                 daysOffCount++;
-                System.out.println(" weekend");
             } else {
                 dayMonthOfPeriod = new Holiday(startDate.getMonth().getValue(), startDate.getDayOfMonth());
                 if (Collections.binarySearch(holidays, dayMonthOfPeriod, holidayComparator) >= 0) {
                     daysOffCount++;
-                    System.out.println("holiday");
                 }
             }
             startDate = startDate.plus(Period.ofDays(1));

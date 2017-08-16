@@ -95,8 +95,12 @@
         <div class="bx-result">
             <div class="row">
                 <div class="eight columns"><p>From and including:
-                    <strong>${startDate.dayOfWeek} ${startDate.dayOfMonth} ${startDate.month} ${startDate.year} </strong><br>To,
-                    but <strong>not</strong> including
+                    <strong>${startDate.dayOfWeek} ${startDate.dayOfMonth} ${startDate.month} ${startDate.year} </strong><br>
+                    To,
+                    <c:if test="${isEndDayIncluded == false}">
+                        but <strong>not</strong>
+                    </c:if>
+                    including:
                     <strong>${endDate.dayOfWeek} ${endDate.dayOfMonth} ${endDate.month} ${endDate.year} </strong></p>
                     <h2>Result: <c:out value="${result}"/> days</h2>
                 </div>
