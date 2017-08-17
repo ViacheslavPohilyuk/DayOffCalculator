@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity deleteId(@PathVariable long id) {
         userRepository.delete(id);
         return new ResponseEntity<>("User have been successfully deleted", HttpStatus.OK);
