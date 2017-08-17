@@ -5,7 +5,7 @@ App brings holidays from a database from table "holidays".
 + [Login page](https://damp-plains-37527.herokuapp.com/login)
 + [Sign up page](https://damp-plains-37527.herokuapp.com/register)
 + [Day off calculator page (need authorization)](https://damp-plains-37527.herokuapp.com/calc)
-+ [Swagger documentation (api doc)](https://damp-plains-37527.herokuapp.com/calc)
++ [Swagger documentation (api doc)](https://damp-plains-37527.herokuapp.com/swagger-ui.html)
 
 
 ![datecalculator](https://user-images.githubusercontent.com/23726583/29413815-61842522-8366-11e7-99a9-5394d47ebe83.png)
