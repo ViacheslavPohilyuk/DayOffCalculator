@@ -1,5 +1,5 @@
 # DayOffCalculator
-
+![datecalculator](https://user-images.githubusercontent.com/23726583/29413815-61842522-8366-11e7-99a9-5394d47ebe83.png)
 ### Technologies used:
 - Java 8
 - Maven 3
