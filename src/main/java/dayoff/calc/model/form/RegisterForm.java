@@ -1,9 +1,6 @@
 package dayoff.calc.model.form;
 
 import lombok.*;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
