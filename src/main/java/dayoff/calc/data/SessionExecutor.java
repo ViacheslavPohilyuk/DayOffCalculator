@@ -23,12 +23,12 @@ public class SessionExecutor {
         this.sessionFactory = sessionFactory;
     }
 
-    public Long updateSession(Function<Session, Long> updateStmt) {
+    public Long updateSession(Function<Session, Long> updateSmth) {
         Long id = null;
         try {
             Session session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
-            id = updateStmt.apply(session); // update operation
+            id = updateSmth.apply(session); // update operation
             tx.commit();
             session.close();
         } catch (HibernateException e) {
@@ -37,11 +37,11 @@ public class SessionExecutor {
         return id;
     }
 
-    public <T> T readSession(Function<Session, T> readStmt) {
+    public <T> T readSession(Function<Session, T> readSmth) {
         T result = null;
         try {
             Session session = sessionFactory.openSession();
-            result = readStmt.apply(session); // read data operation
+            result = readSmth.apply(session); // read data operation
             session.close();
         } catch (HibernateException e) {
             e.printStackTrace();

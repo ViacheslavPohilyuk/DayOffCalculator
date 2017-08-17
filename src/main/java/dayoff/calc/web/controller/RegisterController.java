@@ -49,21 +49,15 @@ public class RegisterController {
         if (bindingResult.hasErrors())
             return "signUp";
 
-        System.out.println(form.toString());
-
         /* Check if username from the registration form exists in the db */
         String formUsername = form.getUsername();
         List<String> usernames = userRepository.getUsernames();
         for (String u : usernames)
-            if (u.equals(formUsername)) {
-                System.out.println("DuplicateUsernameException");
+            if (u.equals(formUsername))
                 throw new DuplicateUsernameException();
-            }
 
-        if (!form.getPassword().equals(form.getConfirmPassword())) {
-            System.out.println("PasswordsNotEqualException");
+        if (!form.getPassword().equals(form.getConfirmPassword()))
             throw new PasswordsNotEqualException();
-        }
 
         /* Encode password */
         String encodedPassword = passwordEncoder.encode(form.getPassword());
@@ -76,7 +70,6 @@ public class RegisterController {
         Role role = new Role(Role.USER);
         user.setId(userId);
         role.setUser(user);
-        System.out.println(role.toString());
         roleRepository.save(role);
 
         return "login";

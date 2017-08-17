@@ -29,16 +29,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                //.antMatchers("/user").access("hasRole('ROLE_USER')")
                 .and()
                     .formLogin()
                     .loginPage("/login")
-                        .defaultSuccessUrl("/calc")
-                        .failureUrl("/login?error")
+                    .defaultSuccessUrl("/calc")
+                    .failureUrl("/login?error")
                     .permitAll()
-                        .loginProcessingUrl("/auth/login_check")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
+                    .loginProcessingUrl("/auth/login_check")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
                 .and()
                     .logout().logoutSuccessUrl("/").logoutUrl("/logout")
                 .and()
@@ -53,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
 
         authProvider.setUserDetailsService((username) -> {
             User user = userRepository.getByName(username);

@@ -15,7 +15,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySources({
-        @PropertySource("classpath:localhost_jdbc.properties"),
+        @PropertySource("classpath:heroku_db.properties"),
         @PropertySource("classpath:hibernate_settings.properties")
 })
 @ComponentScan({"dayoff.calc"})

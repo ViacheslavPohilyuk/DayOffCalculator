@@ -51,8 +51,6 @@ public class CalculationController {
         if (bindingResult.hasErrors())
             return "calc";
 
-        System.out.println("dateForm: " + dateForm.toString());
-
         LocalDate startDate = LocalDate.of(dateForm.startDateYear(),
                 dateForm.startDateMonth(),
                 dateForm.startDateDay());

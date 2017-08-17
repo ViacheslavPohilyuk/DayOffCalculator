@@ -22,12 +22,10 @@ public class RoleRepository {
                 s.createCriteria(Role.class).add(Restrictions.eq("user.id", userId)).list());
     }
 
-
     public void save(Role role) {
         sessionExecutor.updateSession((s) -> {
             s.persist(role);
             return null;
         });
     }
-
 }

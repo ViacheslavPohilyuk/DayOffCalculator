@@ -12,7 +12,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Date Calculator</title>
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/resources/style/calc.css"/>">
     <link rel="stylesheet" type="text/css"
@@ -107,7 +107,6 @@
             </div>
         </div>
     </c:if>
-
 </div>
 </body>
 <style>
