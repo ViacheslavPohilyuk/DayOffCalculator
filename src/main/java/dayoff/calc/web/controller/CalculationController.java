@@ -2,9 +2,12 @@ package dayoff.calc.web.controller;
 
 import dayoff.calc.DayOffCalculation;
 import dayoff.calc.data.repo.DateRepository;
+import dayoff.calc.model.Holiday;
 import dayoff.calc.model.form.DateForm;
 import dayoff.calc.web.exception.EndDateLessThanStartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +32,9 @@ public class CalculationController {
 
     @Autowired
     private DayOffCalculation dayOffCalc;
+
+    @Autowired
+    private DateRepository dateRepository;
 
     @RequestMapping(method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -66,5 +72,12 @@ public class CalculationController {
         model.addAttribute("endDate", endDate);
         model.addAttribute("result", result);
         return "calc";
+    }
+
+    @RequestMapping(value = "/holiday", method = POST)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity saveHoliday(@Valid Holiday holiday) {
+        dateRepository.save(holiday);
+        return new ResponseEntity<>("New holiday have been successfully saved", HttpStatus.OK);
     }
 }

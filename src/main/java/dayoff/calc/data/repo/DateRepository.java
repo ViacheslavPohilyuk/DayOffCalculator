@@ -2,6 +2,7 @@ package dayoff.calc.data.repo;
 
 import dayoff.calc.data.SessionExecutor;
 import dayoff.calc.model.Holiday;
+import dayoff.calc.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,12 @@ public class DateRepository {
 
     public List<Holiday> getAll() {
         return sessionExecutor.readSession((s) -> new ArrayList<Holiday>(s.createCriteria(Holiday.class).list()));
+    }
+
+    public void save(Holiday holiday) {
+        sessionExecutor.updateSession((s) -> {
+            s.persist(holiday);
+            return null;
+        });
     }
 }

@@ -3,6 +3,7 @@ package dayoff.calc.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,9 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "holidays"
-        /* , uniqueConstraints =
-        @UniqueConstraint(columnNames = {"day1", "month1"}) */)
+@Table(name = "holidays")
 public class Holiday implements Serializable {
 
     @Id
@@ -24,9 +23,11 @@ public class Holiday implements Serializable {
     private Long id;
 
     @Column(name = "month")
+    @Range(min = 1, max = 12)
     int month;
 
     @Column(name = "day")
+    @Range(min = 1, max = 31)
     int day;
 
     public Holiday(int month, int day) {
