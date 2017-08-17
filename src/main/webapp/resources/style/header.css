@@ -21,6 +21,11 @@ div.logo-with-name div {
     bottom: 60px;
 }
 
+.logout {
+    position: relative;
+    left: 315%;
+}
+
 .header-global-new {
     box-sizing: border-box;
     position: relative;
