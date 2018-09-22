@@ -1,5 +1,5 @@
 # DayOffCalculator
-This web application calculates count of weekends (Saturday, Sunday) and holidays between two dates.
+This web application calculates count of weekends (Saturday, Sunday) and holidays between two dates.  
 App brings holidays from a database from table "holidays".
 #### Pages of web site:
 + [Login page](https://damp-plains-37527.herokuapp.com/login)
